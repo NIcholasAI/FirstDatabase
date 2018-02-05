@@ -1,0 +1,79 @@
+USE nivanoff_db;
+SET SQL_SAFE_UPDATES = 0;
+-- CREATING A NEW TABLE CALLED department
+CREATE TABLE department (department_id INT AUTO_INCREMENT PRIMARY KEY, department_code VARCHAR(50) UNIQUE, department_name VARCHAR(50) UNIQUE);
+INSERT INTO department (department_name, department_code) VALUES ('CS','CS');
+INSERT INTO department (department_name, department_code) VALUES ('Math','Math');
+SELECT * FROM department;
+INSERT INTO department (department_name, department_code) VALUES('Math','Math');
+SELECT * FROM department;
+UPDATE department SET department_name = 'Mathematics' WHERE department_id = 2;
+SELECT * FROM department;
+UPDATE department SET department_name = 'Computer Science' WHERE department_id = 1;
+SELECT * FROM department;
+INSERT INTO department (department_name, department_code) VALUES ('Geology','Geology');
+INSERT INTO department (department_name, department_code) VALUES ('Geography', 'Geography');
+INSERT INTO department (department_name, department_code) VALUES ('Physics', 'Physics');
+INSERT INTO department (department_name, department_code) VALUES ('Biology', 'Biology');
+SELECT * FROM department;
+DELETE FROM department WHERE department_id = 7;
+DELETE FROM department WHERE department_id = 8;
+SELECT * FROM department;
+INSERT INTO department (department_name, department_code) VALUES ('Test Department', 'TD');
+SELECT * FROM department;
+DELETE FROM department WHERE department_id = 9;
+SELECT * FROM department;
+
+-- CREATING A NEW TABLE CALLED course
+DROP TABLE IF EXISTS course;
+CREATE TABLE course (course_id INT AUTO_INCREMENT PRIMARY KEY, course_name VARCHAR (100) UNIQUE, 
+course_number VARCHAR (3), department_id INT, UNIQUE (course_number, department_id), 
+FOREIGN KEY (department_id) REFERENCES department (department_id) ON DELETE CASCADE);
+
+INSERT INTO course (course_name, course_number, department_id) VALUES ('Databases', '355', 1);
+INSERT INTO course (course_name, course_number, department_id) VALUES ('Calculus', '115', 2);
+INSERT INTO course (course_name, course_number, department_id) VALUES ('Programming 1', '115', 1);
+INSERT INTO course (course_name, course_number, department_id) VALUES ('Calculus II', '215', 2);
+SELECT * FROM course; 
+UPDATE course SET course_number = '355' WHERE course_name = 'Databases';
+SELECT * FROM course;
+UPDATE course SET course_number = '115' WHERE course_name = 'Calculus';
+SELECT * FROM course;
+INSERT INTO course (course_name, course_number, department_id) VALUES ('Test Course', '101', 9);
+SELECT * FROM course;
+
+-- NOW PLAYING WITH LEFT, RIGHT, AND "NORMAL" JOIN COMMANDS
+SELECT department_name, course_name FROM department RIGHT JOIN course ON department.department_id = course.department_id;
+
+-- CREATING NEW TABLE CALLED section
+CREATE TABLE section (section_id INT AUTO_INCREMENT PRIMARY KEY, section_number INT, course_id INT, semester VARCHAR(100), year INT);
+DROP TABLE IF EXISTS section;
+
+CREATE TABLE section (section_id INT AUTO_INCREMENT PRIMARY KEY, 
+section_number INT, course_id INT, semester VARCHAR (100), year INT, UNIQUE (course_id,section_number, semester, year), 
+FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE);
+
+INSERT INTO section (section_number, course_id, semester, year) VALUES ('001', 2, 'Spring', 2017);
+SELECT * FROM section;
+INSERT INTO section (section_number, course_id, semester, year) VALUES ('003',9 , 'Fall', 2015);
+SELECT * FROM section;
+
+-- BEING FANCY WITH JOIN COMMANDS AND JOINING department, course, and section TABLE
+SELECT department_name, course_name, section_number FROM department 
+LEFT JOIN course ON department.department_id = course.department_id 
+LEFT JOIN section ON course.course_id = section.course_id;
+
+-- NOW USEING ALLIAS FOR TABLES
+SELECT department_name, course_name, section_number FROM department d 
+LEFT JOIN course c ON d.department_id = c.department_id 
+LEFT JOIN section s ON c.course_id = s.course_id;
+
+SELECT department_name as DeptName, course_name as CourseName, section_number as SectionNumber FROM department d 
+LEFT JOIN course c ON d.department_id = c.department_id 
+LEFT JOIN section s ON c.course_id = s.course_id;
+
+SELECT department_name as DeptName, course_name as CourseName, section_number as SectionNumber FROM department d
+LEFT JOIN course c ON d.department_id = c.department_id
+LEFT JOIN section s ON c.course_id = s.course_id
+WHERE department_name = 'Computer Science';
+-- DONE!
