@@ -1,0 +1,31 @@
+USE nivanoff_db;
+CREATE TABLE student (student_number INT PRIMARY KEY, first_name VARCHAR(100), last_name VARCHAR(100), class VARCHAR (50), major VARCHAR(50));
+INSERT INTO student (student_number, first_name, last_name, class, major) VALUES (1, 'Larry', 'Ellison', 'Freshman', 'Computer Science');
+SELECT * FROM student;
+SELECT first_name, last_name, student_number FROM student;
+SELECT * from student WHERE class = 'Freshman';
+SET SQL_SAFE_UPDATES = 0;
+UPDATE student SET first_name = 'Lawrence', class = 'Sophomore' WHERE student_number = 1;
+UPDATE student SET class = 'Junior';
+DELETE FROM student WHERE student_number = 1;
+
+CREATE TABLE course (course_number INT PRIMARY KEY, course_name VARCHAR(100) UNIQUE, units INT);
+INSERT INTO course (course_number, course_name, units) VALUES ('101', 'Biology', '4');
+INSERT INTO course (course_number, course_name, units) VALUES ('355', 'Databases', '4');
+INSERT INTO course (course_number, course_name, units) VALUES ('201', 'Intro to Unix', '4');
+INSERT INTO course (course_number, course_name, units) VALUES ('497', 'Internship', '4');
+SELECT * FROM course;
+SELECT * FROM course WHERE course_number = '101';
+SELECT * FROM course WHERE course_name = 'Databases';
+SET SQL_SAFE_UPDATES = 0;
+UPDATE course SET course_name = 'Into to Biology' WHERE course_number = '101';
+SELECT * FROM course;
+DELETE FROM course WHERE course_number = '497';
+SELECT * FROM course;
+
+INSERT INTO course (course_number, course_name, units) VALUES ('300', 'Writing','3');
+SELECT * FROM course;
+UPDATE course SET course_name = 'Writing Code' WHERE course_number = '300';
+SELECT * FROM course;
+DELETE FROM course WHERE course_number = '300';
+SELECT * FROM course;
