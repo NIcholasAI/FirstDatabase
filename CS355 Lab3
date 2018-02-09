@@ -153,5 +153,13 @@ connection.query(qry,[department], function (err, result){
 console.log("this prints before the error or the results");
 */
 
-
-
+-- SQL COMMANDS 
+SELECT * FROM section;
+SELECT * FROM course;
+-- INSERT INTO section (section_number, semester, year, course_id)
+  SELECT *
+  FROM course c JOIN department d ON d.department_id = c.department_id
+  -- WHERE d.department_code = 'CS' AND c.course_number = '101';
+SELECT * FROM student;
+CREATE TABLE student (student_id INT PRIMARY KEY AUTO_INCREMENT, student_number INT UNIQUE, first_name VARCHAR(50), last_name VARCHAR(50));
+DROP TABLE IF EXISTS student;
