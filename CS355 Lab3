@@ -49,3 +49,109 @@ connection.query(qry,[department], function (err, result){
 
 console.log("this prints before the error or the results");
 */
+
+
+
+
+var mysql = require('mysql');
+var db = require('./db_connection.js');
+
+
+
+var student = [
+    ['1000', 'Alan', 'Turing'],
+    ['2000', 'Grace', 'Hooper'],
+    ['3000', 'Ada', 'Lovelace'],
+    ['4000', 'Frida', 'Kahlo'],
+    ['5000', 'George', 'Orwell'],
+    ['6000', 'Bankey', 'Bankey']
+
+];
+
+/*var section = [
+    ['1', 'Spring', '2015','CS', '355'],
+    ['5','Fall','2017', 'ENG', '301'],
+    ['18', 'Fall', '2016', 'ARTH', '101'],
+    ['20','Spring', '2017', 'CS', '355']
+];
+
+*/
+/*
+var course = [
+    ['Programming I', 355, 'CS'],
+    ['Databases', 370, 'CS'],
+    ['Intro to Art Hist', 101, 'ARTH'],
+    ['Writing', 301, 'ENG']
+];
+*/
+/*
+var department = [
+    ['Computer Science', 'CS'],
+    ['Mathematics', 'MATH'],
+    ['Art History', 'ARTH'],
+    ['English', 'ENG']
+];
+*/
+
+----------------------------------------------------------------------------------------------------------------------------------
+var connection = mysql.createConnection(db.config);
+
+//var sectionInsertQuery = 'INSERT INTO section (section_number, semester, year, course_id) SELECT ?, ?, ?, course_id FROM course c JOIN department d ON d.department_id = c.department_id WHERE d.department_code = ? AND c.course_number = ?';
+
+
+//var courseInsertQuery = 'INSERT INTO course (course_name, course_number, department_id) SELECT ?, ?, department_id FROM department WHERE department_code = ?';
+
+
+
+    connection.query(studentInsertQuery, [student], function (err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(result);
+        }
+    });
+
+/*
+section.forEach(function (section) {
+    connection.query(sectionInsertQuery,section,function (err, result) {
+        if (err){
+            console.log(err);
+        } else {
+            console.log(result);
+        }
+    });
+
+});
+
+*/
+
+
+/*course.forEach( function (course) {
+    connection.query(courseInsertQuery, course, function(err, result){
+    if (err) {
+        console.log(err);
+    }else {
+        console.log(result);
+    }
+    });
+});
+*/
+
+ var studentInsertQuery = 'INSERT INTO student(student_id, student_number, first_name, last_name), VALUES ?';
+/*
+var qry = 'INSERT INTO department(department_name, department_code) VALUES ?';
+
+connection.query(qry,[department], function (err, result){
+    if (err){
+        console.log(err);
+    } else {
+        console.log(result);
+    }
+    connection.end();
+});
+
+console.log("this prints before the error or the results");
+*/
+
+
+
