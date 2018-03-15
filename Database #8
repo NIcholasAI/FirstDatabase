@@ -1,0 +1,181 @@
+USE nivanoff_db;
+SET SQL_SAFE_UPDATES=0;
+
+-- ACCOUNT TABLE
+CREATE TABLE account (account_id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(256) UNIQUE, first_name VARCHAR(50), 
+last_name VARCHAR (50));
+
+INSERT INTO account(email,first_name,last_name) VALUES ('bigSmalls12@gmail.com', 'John', 'Smith');
+INSERT INTO account(email,first_name,last_name) VALUES ('puffDaddyStacks44@gmail.com', 'Steve', 'Flumberdink');
+INSERT INTO account(email,first_name,last_name) VALUES ('starWarsNerd2009@gmail.com', 'Gohn', 'General');
+INSERT INTO account(email,first_name,last_name) VALUES ('oldManClassic@aol.com', 'Charles', 'Elder');
+INSERT INTO account(email,first_name,last_name) VALUES ('theLastEmail@yahoo.com', 'Finley', 'Last');
+
+SELECT * FROM account;
+
+
+-- SCHOOL TABLE 
+CREATE TABLE school (school_id INT AUTO_INCREMENT PRIMARY KEY, address_id INT, school_name VARCHAR(50) UNIQUE, 
+FOREIGN KEY (address_id) REFERENCES address (address_id) ON DELETE CASCADE);
+
+INSERT INTO school (address_id, school_name) VALUES (1, 'The School of Cool');
+INSERT INTO school (address_id, school_name) VALUES (2, 'Gifted Smart College');
+INSERT INTO school (address_id, school_name) VALUES (3, 'Wabbagababa College');
+INSERT INTO school (address_id, school_name) VALUES (4, 'Overpriced Tuition');
+INSERT INTO school (address_id, school_name) VALUES (5, 'Superhero College');
+
+SELECT * FROM school;
+
+-- RESUME TABLE
+CREATE TABLE resume (resume_id INT AUTO_INCREMENT PRIMARY KEY, account_id INT, resume_name VARCHAR (20), 
+UNIQUE INDEX (resume_name, account_id), FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE);
+
+INSERT INTO resume (account_id, resume_name) VALUES (1, 'John Smith');
+INSERT INTO resume (account_id, resume_name) VALUES (2, 'Steve Flumberdink');
+INSERT INTO resume (account_id, resume_name) VALUES (4, 'Gohn General');
+INSERT INTO resume (account_id, resume_name) VALUES (5, 'Charles Elder');
+INSERT INTO resume (account_id, resume_name) VALUES (6, 'Finley Last');
+
+SELECT * FROM resume;
+
+
+-- RESUME SCHOOL TABLE
+CREATE TABLE resume_school (resume_id INT, school_id INT, PRIMARY KEY (resume_id, school_id),
+FOREIGN KEY (resume_id) REFERENCES resume (resume_id) ON DELETE CASCADE,
+FOREIGN KEY (school_id) REFERENCES school (school_id) ON DELETE CASCADE);
+
+INSERT INTO resume_school (resume_id, school_id) VALUES (4,3);
+INSERT INTO resume_school (resume_id, school_id) VALUES (5,5);
+INSERT INTO resume_school (resume_id, school_id) VALUES (2,1);
+INSERT INTO resume_school (resume_id, school_id) VALUES (3,4);
+INSERT INTO resume_school (resume_id, school_id) VALUES (1,2);
+
+
+SELECT * FROM resume_school;
+
+-- RESUME SKILL
+CREATE TABLE resume_skill (skill_id INT, resume_id INT, PRIMARY KEY (skill_id, resume_id),
+FOREIGN KEY (skill_id) REFERENCES skill (skill_id) ON DELETE CASCADE,
+FOREIGN KEY (resume_id) REFERENCES resume (resume_id) ON DELETE CASCADE); 
+
+INSERT INTO resume_skill (skill_id, resume_id) VALUES (4,3);
+INSERT INTO resume_skill (skill_id, resume_id) VALUES (3,2);
+INSERT INTO resume_skill (skill_id, resume_id) VALUES (1,2);
+INSERT INTO resume_skill (skill_id, resume_id) VALUES (5,5);
+INSERT INTO resume_skill (skill_id, resume_id) VALUES (2,1);
+
+
+SELECT * FROM resume_skill;
+
+-- SKILL TABLE
+CREATE TABLE skill (skill_id INT AUTO_INCREMENT PRIMARY KEY, skill_name VARCHAR(50) UNIQUE, description VARCHAR(200));
+
+INSERT INTO skill (skill_name, description) VALUES ('Fishing', 'Can get fish from water');
+INSERT INTO skill (skill_name, description) VALUES ('Cooking', 'Makes good eats');
+INSERT INTO skill (skill_name, description) VALUES ('Typing', 'Can use keyboard');
+INSERT INTO skill (skill_name, description) VALUES ('Reading', 'Can read');
+INSERT INTO skill (skill_name, description) VALUES ('Gamer', 'Got good'); 
+
+SELECT * FROM skill;
+
+-- ADDRESS TABLE
+CREATE TABLE address (address_id INT AUTO_INCREMENT PRIMARY KEY, street VARCHAR(50), zip_code VARCHAR(10));
+
+INSERT INTO address (street, zip_code) VALUES ('Happy Court', '123');
+INSERT INTO address (street, zip_code) VALUES ('Gamer Way', '1337');
+INSERT INTO address (street, zip_code) VALUES ('Street Street', '456');
+INSERT INTO address (street, zip_code) VALUES ('The Road', '111');
+INSERT INTO address (street, zip_code) VALUES ('The Legend', '27');
+
+SELECT * FROM address;
+
+-- COMPANY TABLE
+CREATE TABLE company (company_id INT AUTO_INCREMENT PRIMARY KEY, company_name VARCHAR (50) UNIQUE);
+
+INSERT INTO company (company_name) VALUES ('Google');
+INSERT INTO company (company_name) VALUES ('Facebook');
+INSERT INTO company (company_name) VALUES ('Sony');
+INSERT INTO company (company_name) VALUES ('Nintendo');
+INSERT INTO company (company_name) VALUES ('Amazon'); 
+
+SELECT * FROM company;
+
+
+-- COMPANY_ADDRESS TABLE
+CREATE TABLE company_address (company_id INT, address_id INT, PRIMARY KEY (company_id, address_id),
+FOREIGN KEY (company_id) REFERENCES company (company_id) ON DELETE CASCADE,
+FOREIGN KEY (address_id) REFERENCES address (address_id) ON DELETE CASCADE);
+
+INSERT INTO company_address (company_id, address_id) VALUES (5,5);
+INSERT INTO company_address (company_id, address_id) VALUES (4,1);
+INSERT INTO company_address (company_id, address_id) VALUES (3,2);
+INSERT INTO company_address (company_id, address_id) VALUES (2,3);
+INSERT INTO company_address (company_id, address_id) VALUES (1,4);
+
+
+SELECT * FROM company_address;
+
+-- ACCOUNT SCHOOL TABLE
+CREATE TABLE account_school (account_id INT, school_id INT, PRIMARY KEY (account_id, school_id), 
+start_date DATE, end_date DATE, gpa FLOAT, 
+FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE,
+FOREIGN KEY (school_id) REFERENCES school (school_id) ON DELETE CASCADE);
+
+INSERT INTO account_school (account_id, school_id, start_date, end_date, gpa) VALUES (6,5, '1852-08-16', '1856-05-12', '3.5');
+INSERT INTO account_school (account_id, school_id, start_date, end_date, gpa) VALUES (5,3, '1762-08-12', '1766-05-10','3.8');
+INSERT INTO account_school (account_id, school_id, start_date, end_date, gpa) VALUES (4,4, '2001-08-18', '2005-05-16','2.8');
+INSERT INTO account_school (account_id, school_id, start_date, end_date, gpa) VALUES (2,1, '2005-08-22', '2009-05-20', '2.3');
+INSERT INTO account_school (account_id, school_id, start_date, end_date, gpa) VALUES (1,2, '2000-08-10', '2004-05-08', '3.2');
+UPDATE account_school SET gpa ='3.2' WHERE school_id = 2; -- Flubbed code up on last entry... fixed it 
+SELECT * FROM account_school;
+
+
+-- ACCOUNT COMPANY TABLE
+CREATE TABLE company_account (company_id INT, account_id INT, PRIMARY KEY (company_id, account_id),
+FOREIGN KEY (company_id) REFERENCES company (company_id) ON DELETE CASCADE,
+FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE);
+
+INSERT INTO company_account (company_id, account_id) VALUES (5,6);
+INSERT INTO company_account (company_id, account_id) VALUES (4,5);
+INSERT INTO company_account (company_id, account_id) VALUES (3,4);
+INSERT INTO company_account (company_id, account_id) VALUES (2,1);
+INSERT INTO company_account (company_id, account_id) VALUES (1,2);
+
+SELECT * FROM company_account;
+
+-- ACCOUNT_SKILL
+CREATE TABLE account_skill (account_id INT, skill_id INT, PRIMARY KEY (account_id, skill_id),
+FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE,
+FOREIGN KEY (skill_id) REFERENCES skill (skill_id) ON DELETE CASCADE);
+
+INSERT INTO account_skill (account_id, skill_id) VALUES (6,5);
+INSERT INTO account_skill (account_id, skill_id) VALUES (5,3);
+INSERT INTO account_skill (account_id, skill_id) VALUES (4,2);
+INSERT INTO account_skill (account_id, skill_id) VALUES (2,1);
+INSERT INTO account_skill (account_id, skill_id) VALUES (1,2);
+
+SELECT * FROM account_skill;
+
+-- RESUME COMPANY TABLE
+CREATE TABLE resume_company (resume_id INT, company_id INT, 
+PRIMARY KEY (resume_id, company_id), date_shared DATE, was_hired BOOL,
+FOREIGN KEY (resume_id) REFERENCES resume (resume_id) ON DELETE CASCADE, 
+FOREIGN KEY (company_id) REFERENCES company (company_id) ON DELETE CASCADE);
+
+INSERT INTO resume_company (resume_id, company_id, date_shared, was_hired) VALUES (4,4, '1767-05-22', TRUE);
+INSERT INTO resume_company (resume_id, company_id, date_shared, was_hired) VALUES (5,5, '2005-05-20', TRUE);
+INSERT INTO resume_company (resume_id, company_id, date_shared, was_hired) VALUES (3,3, '2009-05-12', FALSE);
+INSERT INTO resume_company (resume_id, company_id, date_shared, was_hired) VALUES (1,2, '2006-05-17', FALSE);
+INSERT INTO resume_company (resume_id, company_id, date_shared, was_hired) VALUES (2,1, '1998-05-08', FALSE);
+
+SELECT * FROM resume_company;
+
+
+-- TASK 3 JOINS
+
+-- Query #1
+SELECT company_name, AVG(gpa) AS average_gpa FROM company c LEFT JOIN resume_company rc ON c.company_id = rc.company_id LEFT JOIN resume r ON r.resume_id = rc.resume_id LEFT JOIN resume_school rs ON rs.resume_id = r.resume_id
+LEFT JOIN account_school as1 ON as1.account_id = r.account_id WHERE rc.was_hired = 1 GROUP BY company_name;
+
+-- Query #2
+SELECT first_name, last_name FROM account a JOIN resume r ON r.account_id = a.account_id JOIN resume_company rc ON rc.resume_id = r.resume_id WHERE rc.was_hired = 1;
